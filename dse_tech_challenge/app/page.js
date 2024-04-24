@@ -1,12 +1,12 @@
 'use client'
 
-
 import React, { useState } from "react";
 import { useFinchConnect } from "@tryfinch/react-connect";
+import { useRouter } from 'next/navigation';
 
 export default function App() {
   const [code, setCode] = useState(null);
-
+  const router = useRouter();
   const handleGetAccessToken = async (authorizationCode) => {
     try {
       console.log('confirm the handlegetaccesstoken');
@@ -33,19 +33,19 @@ export default function App() {
     setCode(code);
     console.log(code);
     handleGetAccessToken(code);
+    router.push('/dashboard');
   };
   const onError = ({ errorMessage }) => console.error(errorMessage);
   const onClose = () => console.log("User exited Finch Connect");
-  //testing my env access
-  console.log("Where is it?");
+
   const myClientID = process.env.CLIENT_ID;
   console.log(myClientID);
   const { open } = useFinchConnect({
     clientId: myClientID,
     products: ["company", "directory", "individual", "employment"],
-    payrollProvider: "gusto", // optional
-    sandbox: "provider",       // optional
-    state: "",                // optional
+    payrollProvider: "gusto",
+    sandbox: "provider",
+    state: "",   
     onSuccess,
     onError,
     onClose,
